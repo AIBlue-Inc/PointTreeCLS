@@ -14,7 +14,7 @@ class IO:
             return cls._read_pcd(file_path)
         elif file_extension in ['.h5']:
             return cls._read_h5(file_path)
-        elif file_extension in ['.txt']:
+        elif file_extension in ['.txt', '.xyz']:
             return cls._read_txt(file_path)
         else:
             raise Exception('Unsupported file extension: %s' % file_extension)
