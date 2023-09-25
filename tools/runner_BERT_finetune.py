@@ -10,7 +10,7 @@ import numpy as np
 from datasets import data_transforms
 from pointnet2_ops import pointnet2_utils
 from torchvision import transforms
-
+import wandb
 
 train_transforms = transforms.Compose(
     [
@@ -46,6 +46,9 @@ class Acc_Metric:
         return _dict
 
 def run_net(args, config, train_writer=None, val_writer=None):
+    wandb.init(project="LiDCLS", config=config)
+    wandb.run.name = "lidar-multiclass-classification-{}".format(datetime.datetime.now().strftime("%Y%m%d-%H%M%S"))
+
     logger = get_logger(args.log_name)
     # build dataset
     (train_sampler, train_dataloader), (_, test_dataloader),= builder.dataset_builder(args, config.dataset.train), \
@@ -91,6 +94,7 @@ def run_net(args, config, train_writer=None, val_writer=None):
     # trainval
     # training
     base_model.zero_grad()
+    global_step = 0
     for epoch in range(start_epoch, config.max_epoch + 1):
         if args.distributed:
             train_sampler.set_epoch(epoch)
@@ -108,6 +112,7 @@ def run_net(args, config, train_writer=None, val_writer=None):
         npoints = config.npoints
         for idx, (taxonomy_ids, model_ids, data) in enumerate(train_dataloader):
             num_iter += 1
+            global_step += 1
             n_itr = epoch * n_batches + idx
             
             data_time.update(time.time() - batch_start_time)
@@ -139,6 +144,10 @@ def run_net(args, config, train_writer=None, val_writer=None):
 
             # loss, acc = base_model.module.get_loss_acc(ret, label)
             loss, acc = base_model.module.get_loss_acc(ret, label, smoothing=args.label_smoothing)
+
+            wandb.log({
+                "train_loss": loss,
+                "train_acc": acc}, step=global_step)
 
             _loss = loss
 
@@ -194,6 +203,9 @@ def run_net(args, config, train_writer=None, val_writer=None):
         if epoch % args.val_freq == 0 and epoch != 0:
             # Validate the current model
             metrics = validate(base_model, test_dataloader, epoch, val_writer, args, config, logger=logger)
+            wandb.log({
+                "test_acc": metrics.acc,
+            }, step=global_step)
 
             better = metrics.better_than(best_metrics)
             # Save ckeckpoints
