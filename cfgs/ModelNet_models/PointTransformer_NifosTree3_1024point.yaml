@@ -20,7 +20,7 @@ dataset : {
   test : { _base_: cfgs/dataset_configs/NifosTree3.yaml,
             others: {subset: 'test'}}}
 model : {
-  NAME: PointTransformer,
+  NAME: PointTransformerBERT,
   trans_dim: 384, 
   depth: 12, 
   drop_path_rate: 0.1, 

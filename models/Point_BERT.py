@@ -100,7 +100,7 @@ class TransformerEncoder(nn.Module):
         return x
 
 @MODELS.register_module()
-class PointTransformer(nn.Module):
+class PointTransformerBERT(nn.Module):
     def __init__(self, config, **kwargs):
         super().__init__()
         self.config = config

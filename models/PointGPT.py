@@ -498,7 +498,7 @@ class PointGPT(nn.Module):
 
 
 @MODELS.register_module()
-class PointTransformer(nn.Module):
+class PointTransformerGPT(nn.Module):
     def __init__(self, config, **kwargs):
         super().__init__()
         self.config = config
