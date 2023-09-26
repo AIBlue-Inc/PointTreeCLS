@@ -22,7 +22,7 @@ dataset:
   }
 model:
   {
-    NAME: PointTransformer,
+    NAME: PointTransformerGPT,
     trans_dim: 768,
     depth: 12,
     drop_path_rate: 0.2,
