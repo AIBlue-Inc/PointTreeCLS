@@ -108,6 +108,7 @@ def run_net(args, config, train_writer=None, val_writer=None):
     # trainval
     # training
     base_model.zero_grad()
+    global_step = 0
     for epoch in range(start_epoch, config.max_epoch + 1):
         if args.distributed:
             train_sampler.set_epoch(epoch)
@@ -125,6 +126,7 @@ def run_net(args, config, train_writer=None, val_writer=None):
         npoints = config.npoints
         for idx, (taxonomy_ids, model_ids, data) in enumerate(train_dataloader):
             num_iter += 1
+            global_step += 1
             n_itr = epoch * n_batches + idx
 
             data_time.update(time.time() - batch_start_time)
