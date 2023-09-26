@@ -10,7 +10,7 @@ import numpy as np
 from datasets import data_transforms
 from pointnet2_ops import pointnet2_utils
 from torchvision import transforms
-
+import wandb
 
 train_transforms = transforms.Compose(
     [
@@ -56,6 +56,9 @@ class Acc_Metric:
 
 
 def run_net(args, config, train_writer=None, val_writer=None):
+    wandb.init(project="LiDCLS", config=config)
+    wandb.run.name = "lidar-multiclass-classification-{}".format(datetime.datetime.now().strftime("%Y%m%d-%H%M%S"))
+
     logger = get_logger(args.log_name)
     # build dataset
     (train_sampler, train_dataloader), (_, test_dataloader), = builder.dataset_builder(args, config.dataset.train), \
@@ -154,6 +157,10 @@ def run_net(args, config, train_writer=None, val_writer=None):
 
             loss, acc = base_model.module.get_loss_acc(ret, label)
 
+            wandb.log({
+                "train_loss": loss,
+                "train_acc": acc}, step=global_step)
+
             _loss = loss + 3 * loss1
 
             try:
@@ -215,6 +222,9 @@ def run_net(args, config, train_writer=None, val_writer=None):
             # Validate the current model
             metrics = validate(base_model, test_dataloader,
                                epoch, val_writer, args, config, logger=logger)
+            wandb.log({
+                "test_acc": metrics.acc,
+            }, step=global_step)
 
             better = metrics.better_than(best_metrics)
             # Save ckeckpoints
