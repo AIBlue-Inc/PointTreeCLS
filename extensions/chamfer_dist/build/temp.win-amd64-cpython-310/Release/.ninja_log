@@ -1,0 +1,5 @@
+# ninja log v5
+9	6925	7199243254479438	E:/2023/PointTreeCLS/extensions/chamfer_dist/build/temp.win-amd64-cpython-310/Release/chamfer_cuda.obj	9e506b12d3247df6
+5	22133	7199243406322324	E:/2023/PointTreeCLS/extensions/chamfer_dist/build/temp.win-amd64-cpython-310/Release/chamfer.obj	1e9023192bb6f19
+23	7042	7199813154998772	E:/2023/PointTreeCLS/extensions/chamfer_dist/build/temp.win-amd64-cpython-310/Release/chamfer_cuda.obj	a29d75d0371d258a
+19	23283	7199813317176936	E:/2023/PointTreeCLS/extensions/chamfer_dist/build/temp.win-amd64-cpython-310/Release/chamfer.obj	d880182fce57bcfb
