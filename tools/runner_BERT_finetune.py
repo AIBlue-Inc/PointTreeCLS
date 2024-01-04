@@ -13,6 +13,10 @@ from torchvision import transforms
 import datetime
 import wandb
 
+import matplotlib.pyplot as plt
+from sklearn.metrics import confusion_matrix
+import seaborn as sns
+
 train_transforms = transforms.Compose(
     [
         data_transforms.PointcloudScaleAndTranslate(),
@@ -336,6 +340,20 @@ def validate_vote(base_model, test_dataloader, epoch, val_writer, args, config, 
     return Acc_Metric(acc)
 
 
+def plot_confusion_matrix(cm, classes, normalize=False, title='Confusion matrix', cmap=plt.cm.Blues, save_path='confusion_matrix.png'):
+    if normalize:
+        cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
+        fmt = '.2f'
+    else:
+        fmt = 'd'
+    plt.figure(figsize=(10, 10))
+    sns.heatmap(cm, annot=True, fmt=fmt, linewidths=.5, square=True, cmap=cmap, xticklabels=classes, yticklabels=classes, cbar=not normalize)
+    plt.ylabel('True label')
+    plt.xlabel('Predicted label')
+    plt.title(title)
+    plt.savefig(save_path)
+    plt.close()
+
 
 def test_net(args, config):
     logger = get_logger(args.log_name)
@@ -398,6 +416,16 @@ def test(base_model, test_dataloader, args, config, logger = None):
                 acc = this_acc
 
         print_log('[TEST_VOTE] acc = %.4f' % acc, logger=logger)
+
+        # After the loop where test_pred and test_label are gathered
+        # Compute confusion matrix
+        cm = confusion_matrix(test_label.cpu().numpy(), test_pred.cpu().numpy())
+        class_names = ['Densi', 'Koraiensis', 'Larix', 'Obtusa']
+        plot_confusion_matrix(cm, class_names, normalize=True, title='Normalized confusion matrix',
+                              save_path='normalized_confusion_matrix.png')
+        plot_confusion_matrix(cm, class_names, normalize=False, title='Confusion matrix, without normalization',
+                              save_path='confusion_matrix.png')
+
 
 def test_vote(base_model, test_dataloader, epoch, val_writer, args, config, logger = None, times = 10):
 
