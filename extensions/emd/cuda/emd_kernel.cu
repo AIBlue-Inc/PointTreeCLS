@@ -16,6 +16,7 @@
 #define CHECK_CONTIGUOUS(x) TORCH_CHECK(x.is_contiguous(), #x " must be contiguous")
 #define CHECK_INPUT(x) CHECK_CUDA(x); CHECK_CONTIGUOUS(x)
 #define CHECK_EQ(x, y) TORCH_CHECK(x == y, #x " does not equal to " #y)
+#define TORCH_CHECK_EQ(val1, val2) CHECK_EQ(val1, val2)
 
 
 /********************************
