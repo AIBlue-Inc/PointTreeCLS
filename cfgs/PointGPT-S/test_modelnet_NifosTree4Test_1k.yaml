@@ -9,7 +9,7 @@ dataset:
         _base_: cfgs/dataset_configs/NifosTree4Test.yaml,
         others: { subset: "train" },
       },
-    valid:
+    val:
       {
           _base_: cfgs/dataset_configs/NifosTree4Test.yaml,
           others: { subset: "valid" },
