@@ -419,6 +419,14 @@ def test(base_model, test_dataloader, args, config, logger = None):
 
         # After the loop where test_pred and test_label are gathered
         # Compute confusion matrix
+        print("=====================================")
+        print(test_pred.cpu().numpy())
+        # save as csv
+        np.savetxt("test_pred.csv", test_pred.cpu().numpy(), delimiter=",")
+        print("=====================================")
+        print(test_label.cpu().numpy())
+        # save as csv
+        np.savetxt("test_label.csv", test_label.cpu().numpy(), delimiter=",")
         cm = confusion_matrix(test_label.cpu().numpy(), test_pred.cpu().numpy())
         class_names = ['Densi', 'Koraiensis', 'Larix', 'Obtusa']
         plot_confusion_matrix(cm, class_names, normalize=True, title='Normalized confusion matrix',
