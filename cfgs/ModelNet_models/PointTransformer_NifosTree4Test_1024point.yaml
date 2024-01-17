@@ -13,6 +13,10 @@ scheduler: {
 }}
 
 dataset : {
+  train: { _base_: cfgs/dataset_configs/NifosTree4Test.yaml,
+           others: { subset: 'train' } },
+  val: { _base_: cfgs/dataset_configs/NifosTree4Test.yaml,
+         others: { subset: 'valid' } },
   test : { _base_: cfgs/dataset_configs/NifosTree4Test.yaml,
             others: {subset: 'test'}}}
 model : {

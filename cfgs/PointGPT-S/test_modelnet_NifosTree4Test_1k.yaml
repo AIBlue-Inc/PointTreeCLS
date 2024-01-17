@@ -4,6 +4,16 @@ scheduler: { type: CosLR, kwargs: { epochs: 300, initial_epochs: 10 } }
 
 dataset:
   {
+    train:
+      {
+        _base_: cfgs/dataset_configs/NifosTree4Test.yaml,
+        others: { subset: "train" },
+      },
+    valid:
+      {
+          _base_: cfgs/dataset_configs/NifosTree4Test.yaml,
+          others: { subset: "valid" },
+      },
     test:
       {
         _base_: cfgs/dataset_configs/NifosTree4Test.yaml,
