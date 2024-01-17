@@ -147,3 +147,4 @@ pretrain_weight
 
 segmentation/log
 data/NIFOS_*
+data/TEST_DATA_XYZ/Densi/test/*
