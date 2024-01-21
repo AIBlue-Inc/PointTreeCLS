@@ -398,7 +398,7 @@ def test(base_model, test_dataloader, args, config, logger = None):
 
             test_pred.append(pred.detach())
             test_label.append(target.detach())
-            test_file.append(file)
+            test_file.extend(file)
 
         test_pred = torch.cat(test_pred, dim=0)
         test_label = torch.cat(test_label, dim=0)
@@ -431,8 +431,9 @@ def test(base_model, test_dataloader, args, config, logger = None):
         # save file list as csv
         # list to csv
         with open('test_file.csv', 'w') as myfile:
-            wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
-            wr.writerow(test_file)
+            for file in test_file:
+                myfile.write(file)
+                myfile.write('\n')
         print("=====================================")
         print(test_label.cpu().numpy())
         # save as csv
