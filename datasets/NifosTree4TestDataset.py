@@ -74,7 +74,7 @@ def load_data(data_path, partition, class_names):
                 all_label.append(label)
 
     # Convert data and label lists to numpy arrays
-    return all_data, all_label
+    return all_data, all_label, file_list
 
 
 @DATASETS.register_module()
@@ -92,16 +92,16 @@ class NifosTree4Test(Dataset):
         self.cat = ['Densi']
         self.classes = dict(zip(self.cat, range(len(self.cat))))
 
-        self.list_of_points, self.list_of_labels = load_data(self.root, split, self.cat)
+        self.list_of_points, self.list_of_labels, self.list_of_files = load_data(self.root, split, self.cat)
 
     def __len__(self):
         return len(self.list_of_points)
 
     def __getitem__(self, index):
-        points, label = self.list_of_points[index], self.list_of_labels[index]
+        points, label, file = self.list_of_points[index], self.list_of_labels[index], self.list_of_files[index]
         pt_idxs = np.arange(0, points.shape[0])   # 1024
         if self.subset == 'train':
             np.random.shuffle(pt_idxs)
         current_points = points[pt_idxs].copy()
         current_points = torch.from_numpy(current_points).float()
-        return 'NifosTree4Test', 'sample', (current_points, label)
+        return 'NifosTree4Test', 'sample', (current_points, label, file)

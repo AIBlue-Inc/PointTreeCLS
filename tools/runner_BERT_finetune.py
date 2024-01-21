@@ -1,3 +1,5 @@
+import csv
+
 import torch
 import torch.nn as nn
 from tools import builder
@@ -378,12 +380,14 @@ def test(base_model, test_dataloader, args, config, logger = None):
 
     test_pred  = []
     test_label = []
+    test_file  = []
     npoints = config.npoints
 
     with torch.no_grad():
         for idx, (taxonomy_ids, model_ids, data) in enumerate(test_dataloader):
             points = data[0].cuda()
             label = data[1].cuda()
+            file = data[2]
 
             points = misc.fps(points, npoints)
 
@@ -394,6 +398,7 @@ def test(base_model, test_dataloader, args, config, logger = None):
 
             test_pred.append(pred.detach())
             test_label.append(target.detach())
+            test_file.append(file)
 
         test_pred = torch.cat(test_pred, dim=0)
         test_label = torch.cat(test_label, dim=0)
@@ -423,6 +428,11 @@ def test(base_model, test_dataloader, args, config, logger = None):
         print(test_pred.cpu().numpy())
         # save as csv
         np.savetxt("test_pred.csv", test_pred.cpu().numpy(), delimiter=",")
+        # save file list as csv
+        # list to csv
+        with open('test_file.csv', 'w') as myfile:
+            wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
+            wr.writerow(test_file)
         print("=====================================")
         print(test_label.cpu().numpy())
         # save as csv
