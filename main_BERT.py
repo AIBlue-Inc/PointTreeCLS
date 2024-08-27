@@ -66,7 +66,7 @@ def main():
                     f'deterministic: {args.deterministic}')
         misc.set_random_seed(args.seed + args.local_rank, deterministic=args.deterministic) # seed + rank, for augmentation
     if args.distributed:
-        assert args.local_rank == torch.distributed.get_rank() 
+        assert args.local_rank == torch.distributed.get_rank()
 
     if args.shot != -1:
         config.dataset.train.others.shot = args.shot
