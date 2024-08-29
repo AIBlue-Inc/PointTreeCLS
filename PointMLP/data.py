@@ -5,7 +5,7 @@ from torch.utils.data import Dataset
 
 os.environ["HDF5_USE_FILE_LOCKING"] = "FALSE"
 
-class_names = ['Densi', 'Koraiensis', 'Larix', 'Obtusa']
+class_names = ['Densi', 'Koraiensis', 'Larix', 'obtusa']
 
 
 def load_data(partition, num_points):
@@ -28,7 +28,7 @@ def load_data(partition, num_points):
                 all_data.append(data)
                 # You can extract the label from the file name or any other source
                 # For example, assuming the file name is in the format 'Densi_X_2048.xyz'
-                label = class_names.index(file_path.split('\\')[-3])
+                label = class_names.index(file_path.split(os.sep)[-3])
                 all_label.append(label)
 
     # Convert data and label lists to numpy arrays
