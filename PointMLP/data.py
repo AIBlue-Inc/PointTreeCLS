@@ -2,17 +2,19 @@ import os
 import glob
 import numpy as np
 from torch.utils.data import Dataset
+
 os.environ["HDF5_USE_FILE_LOCKING"] = "FALSE"
 
 class_names = ['Densi', 'Koraiensis', 'Larix', 'Obtusa']
 
 
-def load_data(partition):
+def load_data(partition, num_points):
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-    DATA_DIR = os.path.join(BASE_DIR, '../data', 'TEST_DATA_XYZ', '*', partition)
+    DATA_DIR = os.path.join(BASE_DIR, '../data', f'NIFOS_TREE_240827_{num_points}_xyz', '*', partition)
     all_data = []
     all_label = []
     file_list = glob.glob(os.path.join(DATA_DIR, '*.xyz'))
+    assert len(file_list) > 0, f"No data found in {DATA_DIR}"
     for file_path in file_list:
         with open(file_path, 'r') as f:
             lines = f.readlines()
@@ -38,32 +40,34 @@ def load_data(partition):
 def random_point_dropout(pc, max_dropout_ratio=0.875):
     ''' batch_pc: BxNx3 '''
     # for b in range(batch_pc.shape[0]):
-    dropout_ratio = np.random.random()*max_dropout_ratio # 0~0.875    
-    drop_idx = np.where(np.random.random((pc.shape[0]))<=dropout_ratio)[0]
+    dropout_ratio = np.random.random() * max_dropout_ratio  # 0~0.875    
+    drop_idx = np.where(np.random.random((pc.shape[0])) <= dropout_ratio)[0]
     # print ('use random drop', len(drop_idx))
 
-    if len(drop_idx)>0:
-        pc[drop_idx,:] = pc[0,:] # set to the first point
+    if len(drop_idx) > 0:
+        pc[drop_idx, :] = pc[0, :]  # set to the first point
     return pc
 
+
 def translate_pointcloud(pointcloud):
-    xyz1 = np.random.uniform(low=2./3., high=3./2., size=[3])
+    xyz1 = np.random.uniform(low=2. / 3., high=3. / 2., size=[3])
     xyz2 = np.random.uniform(low=-0.2, high=0.2, size=[3])
-       
+
     translated_pointcloud = np.add(np.multiply(pointcloud, xyz1), xyz2).astype('float32')
     return translated_pointcloud
 
+
 def jitter_pointcloud(pointcloud, sigma=0.01, clip=0.02):
     N, C = pointcloud.shape
-    pointcloud += np.clip(sigma * np.random.randn(N, C), -1*clip, clip)
+    pointcloud += np.clip(sigma * np.random.randn(N, C), -1 * clip, clip)
     return pointcloud
 
 
 class NifosTree(Dataset):
     def __init__(self, num_points, partition='train'):
-        self.data, self.label = load_data(partition)
+        self.data, self.label = load_data(partition, num_points)
         self.num_points = num_points
-        self.partition = partition        
+        self.partition = partition
 
     def __getitem__(self, item):
         pointcloud = self.data[item][:self.num_points]
@@ -85,6 +89,7 @@ if __name__ == '__main__':
     #     print(data.shape)
     #     print(label.shape)
     from torch.utils.data import DataLoader
+
     train_loader = DataLoader(NifosTree(partition='train', num_points=1024), num_workers=4,
                               batch_size=32, shuffle=True, drop_last=True)
     for batch_idx, (data, label) in enumerate(train_loader):
