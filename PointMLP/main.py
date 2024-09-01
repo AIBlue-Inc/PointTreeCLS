@@ -134,7 +134,7 @@ def main():
 
     """ W&B """
     wandb.init(project='LiDCLS', config=vars(args))
-    wandb.run.name = "lidar-multiclass-classification-{}".format(datetime.datetime.now().strftime("%Y%m%d-%H%M%S"))
+    wandb.run.name = args.exp_name + "-" + str(args.seed) + "-" + time_str
 
     global_step = 0
 
