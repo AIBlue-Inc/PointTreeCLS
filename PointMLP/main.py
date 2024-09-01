@@ -37,6 +37,7 @@ def parse_args():
     parser.add_argument('--weight_decay', type=float, default=2e-4, help='decay rate')
     parser.add_argument('--seed', type=int, help='random seed')
     parser.add_argument('--workers', default=8, type=int, help='workers')
+    parser.add_argument('--exp_name', type=str, default='pointmlp', help='experiment name')
     return parser.parse_args()
 
 
@@ -153,7 +154,9 @@ def main():
         wandb.log({
             "test_loss": test_out["loss"],
             "test_acc": test_out["acc"],
-            "test_acc_avg": test_out["acc_avg"]
+            "train_loss_epoch": train_out["loss"],
+            "train_acc_epoch": train_out["acc"],
+            "epoch": epoch,
         }, step=global_step)
 
         best_test_acc = test_out["acc"] if (test_out["acc"] > best_test_acc) else best_test_acc
