@@ -169,7 +169,9 @@ def run_net(args, config, train_writer=None, val_writer=None):
 
             wandb.log({
                 "train_loss": loss,
-                "train_acc": acc}, step=global_step)
+                "train_acc": acc,
+                "epoch": epoch,
+            }, step=global_step)
 
             _loss = loss + 3 * loss1
 
@@ -230,10 +232,11 @@ def run_net(args, config, train_writer=None, val_writer=None):
 
         if epoch % args.val_freq == 0 and epoch != 0:
             # Validate the current model
-            metrics = validate(base_model, test_dataloader,
-                               epoch, val_writer, args, config, logger=logger)
+            metrics, loss = validate(base_model, test_dataloader,epoch, val_writer, args, config, logger=logger)
             wandb.log({
                 "test_acc": metrics.acc,
+                "test_loss": loss,
+                "epoch": epoch,
             }, step=global_step)
 
             better = metrics.better_than(best_metrics)
@@ -294,8 +297,8 @@ def validate(base_model, test_dataloader, epoch, val_writer, args, config, logge
             test_pred = dist_utils.gather_tensor(test_pred, args)
             test_label = dist_utils.gather_tensor(test_label, args)
 
-        acc = (test_pred == test_label).sum() / \
-            float(test_label.size(0)) * 100.
+        acc = (test_pred == test_label).sum() / float(test_label.size(0)) * 100.
+        loss = base_model.module.get_loss_acc(logits, label)[0]
         print_log('[Validation] EPOCH: %d  acc = %.4f' %
                   (epoch, acc), logger=logger)
 
@@ -306,7 +309,7 @@ def validate(base_model, test_dataloader, epoch, val_writer, args, config, logge
     if val_writer is not None:
         val_writer.add_scalar('Metric/ACC', acc, epoch)
 
-    return Acc_Metric(acc)
+    return Acc_Metric(acc), loss
 
 
 def validate_vote(base_model, test_dataloader, epoch, val_writer, args, config, logger=None, times=10):
