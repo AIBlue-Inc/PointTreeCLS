@@ -325,6 +325,8 @@ def validate_vote(base_model, test_dataloader, epoch, val_writer, args, config, 
             label = data[1].cuda()
             if npoints == 1024:
                 point_all = 1200
+            elif npoints == 2048:
+                point_all = 2400
             elif npoints == 4096:
                 point_all = 4800
             elif npoints == 8192:
