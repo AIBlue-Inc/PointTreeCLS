@@ -26,7 +26,7 @@ def parse_args():
     """ PARAMETERS """
     parser = argparse.ArgumentParser('PointNet')
     parser.add_argument('--batch_size', type=int, default=54, help='batch size in training [default: 24]')
-    parser.add_argument('--model', default='pointmlp', help='model name [default: POINTNET3_MSG_CLS]')
+    parser.add_argument('--model', default='POINTNET_MSG_CLS', help='model name [default: POINTNET3_MSG_CLS]')
     parser.add_argument('--epoch', default=200, type=int, help='number of epoch in training [default: 200]')
     parser.add_argument('--learning_rate', default=0.001, type=float, help='learning rate in training [default: 0.001]')
     parser.add_argument('--ngpu', type=int, default=[0], help='specify how many gpus to train the model [default: 0]')
@@ -35,13 +35,11 @@ def parse_args():
     parser.add_argument('--log_dir', type=str, default=None, help='experiment root')
     parser.add_argument('--decay_rate', type=float, default=1e-4, help='decay rate [default: 1e-4]')
     parser.add_argument('--num_votes', type=int, default=1, help='Aggregate classification scores with voting [default: 3]')
-    parser.add_argument('--test_path', default='../../data/NIFOS_TREE_230920_xyz_2048/*/test', help='path of the test data')
-    parser.add_argument('--train_path', default='../../data/NIFOS_TREE_230920_xyz_2048/*/train', help='path of the train data')
     parser.add_argument("--worker", type=int, default=torch.get_num_threads())
     return parser.parse_args()
 
 
-def test(model, loader, num_class=3, vote_num=1):
+def test(model, loader, criterion, num_class=4, vote_num=1):
     mean_correct = []
     class_acc = np.zeros((num_class, 3))
     for points, target in tqdm(loader):
@@ -50,7 +48,8 @@ def test(model, loader, num_class=3, vote_num=1):
         classifier = model.eval()
         vote_pool = torch.zeros(target.shape[0], num_class).to(device)
         for _ in range(vote_num):
-            pred, _ = classifier(points)
+            pred, trans_feat = classifier(points)
+            loss = criterion(pred, target, trans_feat)
             vote_pool += pred
         pred = vote_pool / vote_num
         pred_choice = pred.data.max(1)[1]
@@ -64,7 +63,7 @@ def test(model, loader, num_class=3, vote_num=1):
     class_acc[:, 2] = np.nan_to_num(class_acc[:, 0] / class_acc[:, 1])
     class_acc = np.mean(class_acc[:, 2])
     instance_acc = np.mean(mean_correct)
-    return instance_acc, class_acc
+    return instance_acc, class_acc, loss
 
 
 def main(args):
@@ -106,15 +105,17 @@ def main(args):
 
     """ DATA LOADING """
     log_string('Load dataset ...')
-    TRAIN_DATASET = SinglePoint(args.train_path, npoint=args.num_point)
-    TEST_DATASET = SinglePoint(args.test_path, npoint=args.num_point)
-    trainDataLoader = DataLoader(TRAIN_DATASET, batch_size=54, shuffle=True, num_workers=0)
-    testDataLoader = DataLoader(TEST_DATASET, batch_size=30, shuffle=False, num_workers=0)
+    train_path = f'../../data/NIFOS_TREE_240827_{args.num_point}_xyz/*/train'
+    test_path = f'../../data/NIFOS_TREE_240827_{args.num_point}_xyz/*/valid'
+    TRAIN_DATASET = SinglePoint(train_path, npoint=args.num_point)
+    TEST_DATASET = SinglePoint(test_path, npoint=args.num_point)
+    trainDataLoader = DataLoader(TRAIN_DATASET, batch_size=args.batch_size, shuffle=True, num_workers=0)
+    testDataLoader = DataLoader(TEST_DATASET, batch_size=args.batch_size, shuffle=False, num_workers=0)
     print('num_train_files: ' + str(len(TRAIN_DATASET.filepaths)))
     print('num_val_files: ' + str(len(TEST_DATASET.filepaths)))
 
     """ MODEL LOADING """
-    num_class = 3
+    num_class = 4
     MODEL = importlib.import_module(args.model)
     shutil.copy('./models/%s.py' % args.model, str(experiment_dir))
     shutil.copy('./models/pointnet_utils.py', str(experiment_dir))
@@ -177,7 +178,7 @@ def main(args):
             wandb.log({"loss": loss.mean().item(), "correct": correct_}, step=global_step)
         _train_instance_acc = np.mean(mean_correct)
         with torch.no_grad():
-            _instance_acc, _class_acc = test(classifier, testDataLoader)
+            _instance_acc, _class_acc, _test_loss = test(classifier, testDataLoader, criterion)
             if _instance_acc >= best_instance_acc:
                 best_instance_acc = _instance_acc
                 best_epoch = epoch + 1
@@ -195,7 +196,14 @@ def main(args):
                 torch.save(state, savepath)
             global_epoch += 1
 
-        wandb.log({"test_instance_acc": _instance_acc, "test_class_acc": _class_acc}, step=global_step)
+        wandb.log({
+                "test_loss": _test_loss,
+                "test_acc": _instance_acc,
+                "train_loss_epoch": loss.mean().item(),
+                "train_acc_epoch": _train_instance_acc,
+                "epoch": epoch,
+            }, step=global_step)
+
         log_string('Train Instance Accuracy: %f' % _train_instance_acc)
         log_string('Test Instance Accuracy: %f, Class Accuracy: %f' % (_instance_acc, _class_acc))
         log_string('Best Instance Accuracy: %f, Class Accuracy: %f' % (best_instance_acc, best_class_acc))
