@@ -7,17 +7,17 @@ dataset:
     train:
       {
         _base_: cfgs/dataset_configs/NifosTree4_2k_test.yaml,
-        others: { subset: "train" },
+        others: { subset: "train", bs: 16 },
       },
     val:
       {
         _base_: cfgs/dataset_configs/NifosTree4_2k_test.yaml,
-        others: { subset: "valid" },
+        others: { subset: "valid", bs: 16 },
       },
     test:
       {
         _base_: cfgs/dataset_configs/NifosTree4_2k_test.yaml,
-        others: { subset: "test" },
+        others: { subset: "test", bs: 16 },
       },
   }
 model:

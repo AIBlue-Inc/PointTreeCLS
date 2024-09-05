@@ -2,12 +2,14 @@ import argparse
 import torch
 import wandb
 from tools import builder
-from utils import misc
+from utils import misc, dist_utils
 import numpy as np
 from torchvision import transforms
 from pointnet2_ops import pointnet2_utils
 from datasets import data_transforms
 from sklearn.metrics import f1_score, precision_score, recall_score, confusion_matrix
+
+from utils.config import get_config
 
 
 def parse_args():
@@ -17,6 +19,8 @@ def parse_args():
     parser.add_argument('--gpu', type=str, default='0', help='specify gpu device')
     parser.add_argument('--num_points', type=int, default=2048, help='number of points')
     parser.add_argument('--batch_size', type=int, default=32, help='batch size')
+    parser.add_argument('--resume', default=None)
+    parser.add_argument('--local_rank', default=None)
     return parser.parse_args()
 
 
@@ -109,7 +113,13 @@ def test_net(args, config):
 
 if __name__ == "__main__":
     args = parse_args()
-    config = misc.Config.fromfile(args.config)
+    args.use_gpu = torch.cuda.is_available()
+    if args.use_gpu:
+        torch.backends.cudnn.benchmark = True
+    # init distributed env first, since logger depends on the dist info.
+    args.distributed = False
+    args.num_workers = 4
+    config = get_config(args)
     test_net(args, config)
 
 # cd tools
@@ -122,6 +132,3 @@ if __name__ == "__main__":
 # python test_and_log.py --config=cfgs/PointGPT-S/finetune_modelnet_NifosTree4_1k_test.yaml --ckpts=experiments/finetune_modelnet_NifosTree4_1k_bs32/PointGPT-S/PointGPT-1024-32-1/ckpt-best.pth --num_points=1024 --batch_size=32
 # python test_and_log.py --config=cfgs/PointGPT-S/finetune_modelnet_NifosTree4_2k_test.yaml --ckpts=experiments/finetune_modelnet_NifosTree4_2k_bs16/PointGPT-S/PointGPT-2048-16-1/ckpt-best.pth --num_points=2048 --batch_size=16
 # python test_and_log.py --config=cfgs/PointGPT-S/finetune_modelnet_NifosTree4_2k_test.yaml --ckpts=experiments/finetune_modelnet_NifosTree4_2k_bs32/PointGPT-S/PointGPT-2048-32-1/ckpt-best.pth --num_points=2048 --batch_size=32
-
-# python test_and_log.py --cfgs/PointGPT-S/finetune_modelnet_NifosTree4_2k_test.yaml \
-# --ckpts=experiments/finetune_modelnet_NifosTree4_2k_bs16/PointGPT-S/PointGPT-2048-16-1/ckpt-best.pth --num_points=2048 --batch_size=16
