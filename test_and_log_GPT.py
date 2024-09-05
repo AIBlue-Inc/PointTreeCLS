@@ -46,15 +46,14 @@ def evaluate(base_model, dataloader, criterion, args, split):
             target = label.view(-1)
 
             pred = logits.argmax(-1).view(-1)
+            loss, acc = base_model.get_loss_acc(logits, label)
 
             test_pred.append(pred.detach())
             test_label.append(target.detach())
+            total_loss += loss
 
         test_pred = torch.cat(test_pred, dim=0)
         test_label = torch.cat(test_label, dim=0)
-
-        acc = (test_pred == test_label).sum() / float(test_label.size(0)) * 100.
-        loss = base_model.get_loss_acc(logits, label)[0]
 
     preds = np.array(test_pred.cpu())
     labels = np.array(test_label.cpu())
@@ -132,7 +131,7 @@ if __name__ == "__main__":
 # python test_and_log.py --config=cfgs/ModelNet_models/PointTransformer_NifosTree4_2k_test.yaml --ckpts=experiments/PointTransformer_NifosTree4_2k_bs16/ModelNet_models/PointBERT-2048-16-1/ckpt-best.pth --num_points=2048 --batch_size=16
 # python test_and_log.py --config=cfgs/ModelNet_models/PointTransformer_NifosTree4_2k_test.yaml --ckpts=experiments/PointTransformer_NifosTree4_2k_bs32/ModelNet_models/PointBERT-2048-32-1/ckpt-best.pth --num_points=2048 --batch_size=32
 
-# python test_and_log.py --config=cfgs/PointGPT-S/finetune_modelnet_NifosTree4_1k_test.yaml --ckpts=experiments/finetune_modelnet_NifosTree4_1k_bs16/PointGPT-S/PointGPT-1024-16-1/ckpt-best.pth --num_points=1024 --batch_size=16
-# python test_and_log.py --config=cfgs/PointGPT-S/finetune_modelnet_NifosTree4_1k_test.yaml --ckpts=experiments/finetune_modelnet_NifosTree4_1k_bs32/PointGPT-S/PointGPT-1024-32-1/ckpt-best.pth --num_points=1024 --batch_size=32
-# python test_and_log_GPT.py --config=cfgs/PointGPT-S/finetune_modelnet_NifosTree4_2k_test.yaml --ckpts=experiments/finetune_modelnet_NifosTree4_2k_bs16/PointGPT-S/PointGPT-2048-16-1/ckpt-best.pth --num_points=2048 --batch_size=16
-# python test_and_log.py --config=cfgs/PointGPT-S/finetune_modelnet_NifosTree4_2k_test.yaml --ckpts=experiments/finetune_modelnet_NifosTree4_2k_bs32/PointGPT-S/PointGPT-2048-32-1/ckpt-best.pth --num_points=2048 --batch_size=32
+# python test_and_log_GPT.py --config=cfgs/PointGPT-S/finetune_modelnet_NifosTree4_1k_test.yaml --ckpts=experiments/finetune_modelnet_NifosTree4_1k_bs16/PointGPT-S/PointGPT-1024-16-1/ckpt-best.pth --num_points=1024 --batch_size=16
+# python test_and_log_GPT.py --config=cfgs/PointGPT-S/finetune_modelnet_NifosTree4_1k_test.yaml --ckpts=experiments/finetune_modelnet_NifosTree4_1k_bs32/PointGPT-S/PointGPT-1024-32-1/ckpt-best.pth --num_points=1024 --batch_size=32
+#O python test_and_log_GPT.py --config=cfgs/PointGPT-S/finetune_modelnet_NifosTree4_2k_test.yaml --ckpts=experiments/finetune_modelnet_NifosTree4_2k_bs16/PointGPT-S/PointGPT-2048-16-1/ckpt-best.pth --num_points=2048 --batch_size=16
+# python test_and_log_GPT.py --config=cfgs/PointGPT-S/finetune_modelnet_NifosTree4_2k_test.yaml --ckpts=experiments/finetune_modelnet_NifosTree4_2k_bs32/PointGPT-S/PointGPT-2048-32-1/ckpt-best.pth --num_points=2048 --batch_size=32
