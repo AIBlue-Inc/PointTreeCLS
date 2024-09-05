@@ -89,7 +89,7 @@ class NifosTree4Test(Dataset):
         split = config.subset
         self.subset = config.subset
 
-        self.cat = ['Densi']
+        self.cat = ['Densi', 'Koraiensis', 'Larix', 'obtusa']
         self.classes = dict(zip(self.cat, range(len(self.cat))))
 
         self.list_of_points, self.list_of_labels, self.list_of_files = load_data(self.root, split, self.cat)
