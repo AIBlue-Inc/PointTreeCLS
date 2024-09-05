@@ -49,7 +49,7 @@ def parse_args():
     return parser.parse_args()
 
 def test_net(args):
-    wandb.init(project="PointMLP-Test", config=args)
+    wandb.init(project="LiDCLS", config=args)
     wandb.run.name = f"test-{args.model}-{args.num_points}-{args.batch_size}"
 
     if torch.cuda.is_available():
@@ -130,16 +130,16 @@ def validate(net, dataloader, criterion, device, num_classes, split):
 
     # Compute and plot confusion matrix
     cm = confusion_matrix(true, pred)
-    class_names = ['Densi', 'Koraiensis', 'Larix', 'Obtusa']
+    class_names = ['Densi', 'Koraiensis', 'Larix', 'obtusa']
     plot_confusion_matrix(cm, class_names, title=f'{split} Confusion Matrix')
 
     return {
-        "loss": float("%.3f" % (loss / len(dataloader))),
-        "acc": float("%.3f" % acc),
-        "acc_avg": float("%.3f" % acc_avg),
-        "f1": float("%.3f" % f1),
-        "precision": float("%.3f" % precision),
-        "recall": float("%.3f" % recall),
+        "loss": float("%.6f" % (loss / len(dataloader))),
+        "acc": float("%.6f" % acc),
+        "acc_avg": float("%.6f" % acc_avg),
+        "f1": float("%.6f" % f1),
+        "precision": float("%.6f" % precision),
+        "recall": float("%.6f" % recall),
         "time": time_cost,
         "pred": pred.tolist(),
         "true": true.tolist()

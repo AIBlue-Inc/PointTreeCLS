@@ -56,11 +56,11 @@ def evaluate(base_model, dataloader, criterion, args, split):
     precision = precision_score(labels, preds, average='weighted')
     recall = recall_score(labels, preds, average='weighted')
 
-    print(f'{split} Accuracy: {acc:.2f}%')
-    print(f'{split} Loss: {avg_loss:.4f}')
-    print(f'{split} F1 Score: {f1:.4f}')
-    print(f'{split} Precision: {precision:.4f}')
-    print(f'{split} Recall: {recall:.4f}')
+    print(f'{split} Accuracy: {acc:.6f}%')
+    print(f'{split} Loss: {avg_loss:.6f}')
+    print(f'{split} F1 Score: {f1:.6f}')
+    print(f'{split} Precision: {precision:.6f}')
+    print(f'{split} Recall: {recall:.6f}')
 
     # Compute confusion matrix
     cm = confusion_matrix(labels, preds)
