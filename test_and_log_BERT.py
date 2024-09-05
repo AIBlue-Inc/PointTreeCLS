@@ -42,8 +42,9 @@ def evaluate(base_model, dataloader, criterion, args, split):
             points = misc.fps(points, args.num_points)
             points = test_transforms(points)
 
-            logits, _ = base_model(points)
-            loss = criterion(logits, label)
+            logits = base_model(points)
+            loss, acc = base_model.get_loss_acc(logits, label)
+
             pred = logits.argmax(-1).view(-1)
 
             preds.extend(pred.cpu().numpy())
@@ -84,7 +85,7 @@ def evaluate(base_model, dataloader, criterion, args, split):
 
 
 def test_net(args, config):
-    model_name = config.model.name
+    model_name = "Point"
     wandb.init(project="LiDCLS", config=config)
     wandb.run.name = f"test-{model_name}-{args.num_points}-{args.batch_size}"
 
