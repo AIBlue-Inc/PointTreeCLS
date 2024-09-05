@@ -29,11 +29,12 @@ def parse_args():
     return parser.parse_args()
 
 
-def test(model, loader, num_class=4, vote_num=1):
+def test(model, loader, criterion, num_class=4, vote_num=1):
     mean_correct = []
     class_acc = np.zeros((num_class, 3))
     all_preds = []
     all_targets = []
+    total_loss = 0.0
 
     for points, target in tqdm(loader, total=len(loader), desc="Testing"):
         points = points.transpose(2, 1)
@@ -42,8 +43,10 @@ def test(model, loader, num_class=4, vote_num=1):
         vote_pool = torch.zeros(target.shape[0], num_class).to(device)
 
         for _ in range(vote_num):
-            pred, _ = classifier(points)
+            pred, trans_feat = classifier(points)
             vote_pool += pred
+            loss = criterion(pred, target, trans_feat)
+            total_loss += loss.item()
 
         pred = vote_pool / vote_num
         pred_choice = pred.data.max(1)[1]
@@ -62,8 +65,9 @@ def test(model, loader, num_class=4, vote_num=1):
     class_acc[:, 2] = np.nan_to_num(class_acc[:, 0] / class_acc[:, 1])
     class_acc = np.mean(class_acc[:, 2])
     instance_acc = np.mean(mean_correct)
+    avg_loss = total_loss / len(loader)
 
-    return instance_acc, class_acc, all_preds, all_targets
+    return instance_acc, class_acc, all_preds, all_targets, avg_loss
 
 
 def main(args):
@@ -97,6 +101,7 @@ def main(args):
     num_class = 4
     MODEL = importlib.import_module(args.model)
     classifier = MODEL.get_model(num_class).to(device)
+    criterion = MODEL.get_loss().to(device)
 
     # Load the best model
     checkpoint = torch.load(str(checkpoints_dir / 'best_model.pth'))
@@ -105,12 +110,12 @@ def main(args):
     # Test the model
     with torch.no_grad():
         # Validation set
-        valid_instance_acc, valid_class_acc, valid_preds, valid_targets = test(classifier.eval(), validDataLoader,
+        valid_instance_acc, valid_class_acc, valid_preds, valid_targets = test(classifier.eval(), validDataLoader, criterion,
                                                                                num_class=num_class,
                                                                                vote_num=args.num_votes)
 
         # Test set
-        test_instance_acc, test_class_acc, test_preds, test_targets = test(classifier.eval(), testDataLoader,
+        test_instance_acc, test_class_acc, test_preds, test_targets = test(classifier.eval(), testDataLoader, criterion,
                                                                            num_class=num_class, vote_num=args.num_votes)
 
     # Calculate additional metrics
