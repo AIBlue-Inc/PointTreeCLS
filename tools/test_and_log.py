@@ -74,11 +74,6 @@ def evaluate(base_model, dataloader, criterion, args, split):
         f"{split}_recall": recall,
         f"{split}_predictions": preds.tolist(),
         f"{split}_true_labels": labels.tolist(),
-        f"{split}_confusion_matrix": wandb.plot.confusion_matrix(
-            preds=preds,
-            y_true=labels,
-            class_names=['Densi', 'Koraiensis', 'Larix', 'obtusa']
-        )
     })
 
     return acc, avg_loss, f1, precision, recall

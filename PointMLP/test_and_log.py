@@ -59,7 +59,7 @@ def test_net(args):
     print(f"==> Using device: {device}")
 
     print('==> Preparing data..')
-    valid_loader = DataLoader(NifosTree(partition='val', num_points=args.num_points), num_workers=4,
+    valid_loader = DataLoader(NifosTree(partition='valid', num_points=args.num_points), num_workers=4,
                               batch_size=args.batch_size, shuffle=False, drop_last=False)
     test_loader = DataLoader(NifosTree(partition='test', num_points=args.num_points), num_workers=4,
                              batch_size=args.batch_size, shuffle=False, drop_last=False)
@@ -96,10 +96,6 @@ def test_net(args):
             f"{split}_predictions": results['pred'],
             f"{split}_true_labels": results['true'],
         })
-
-        # Log confusion matrix
-        cm_image = wandb.Image(f'{split.capitalize()} Confusion Matrix.png')
-        wandb.log({f"{split}_confusion_matrix": cm_image})
 
     wandb.finish()
 
@@ -152,3 +148,9 @@ def validate(net, dataloader, criterion, device, num_classes, split):
 if __name__ == '__main__':
     args = parse_args()
     test_net(args)
+
+
+# python test_and_log.py --model pointMLP --num_points 1024 --batch_size 32 --checkpoint checkpoints/pointmlp-20240901090357-1
+# python test_and_log.py --model pointMLP --num_points 2048 --batch_size 32 --checkpoint checkpoints/pointmlp-20240901072621-1
+# python test_and_log.py --model pointMLP --num_points 2048 --batch_size 16 --checkpoint checkpoints/pointmlp-20240901051520-1
+# python test_and_log.py --model pointMLP --num_points 1024 --batch_size 16 --checkpoint checkpoints/pointmlp-20240901032235-1
