@@ -84,8 +84,9 @@ def evaluate(base_model, dataloader, criterion, args, split):
 
 
 def test_net(args, config):
+    model_name = config.model.name
     wandb.init(project="LiDCLS", config=config)
-    wandb.run.name = f"test-{args.num_points}-{args.batch_size}-{args.ckpts}"
+    wandb.run.name = f"test-{model_name}-{args.num_points}-{args.batch_size}"
 
     _, valid_dataloader = builder.dataset_builder(args, config.dataset.val)
     _, test_dataloader = builder.dataset_builder(args, config.dataset.test)
