@@ -110,12 +110,12 @@ def main(args):
     # Test the model
     with torch.no_grad():
         # Validation set
-        valid_instance_acc, valid_class_acc, valid_preds, valid_targets = test(classifier.eval(), validDataLoader, criterion,
+        valid_instance_acc, valid_class_acc, valid_preds, valid_targets, valid_loss = test(classifier.eval(), validDataLoader, criterion,
                                                                                num_class=num_class,
                                                                                vote_num=args.num_votes)
 
         # Test set
-        test_instance_acc, test_class_acc, test_preds, test_targets = test(classifier.eval(), testDataLoader, criterion,
+        test_instance_acc, test_class_acc, test_preds, test_targets, test_loss = test(classifier.eval(), testDataLoader, criterion,
                                                                            num_class=num_class, vote_num=args.num_votes)
 
     # Calculate additional metrics
@@ -136,12 +136,14 @@ def main(args):
     # Log to W&B
     wandb.log({
         "valid_acc": valid_instance_acc,
+        "valid_loss": valid_loss,
         "valid_class_acc": valid_class_acc,
         "valid_f1": valid_f1,
         "valid_precision": valid_precision,
         "valid_recall": valid_recall,
         "valid_balanced_acc": valid_balanced_acc,
         "test_acc": test_instance_acc,
+        "test_loss": test_loss,
         "test_class_acc": test_class_acc,
         "test_f1": test_f1,
         "test_precision": test_precision,
