@@ -6,3 +6,4 @@ import datasets.ScanObjectNNDataset
 import datasets.NifosTree3Dataset
 import datasets.NifosTree4Dataset
 import datasets.NifosTree4TestDataset
+import datasets.NifosTreeFinal

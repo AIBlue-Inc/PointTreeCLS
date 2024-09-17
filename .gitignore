@@ -140,6 +140,7 @@ data/ModelNetFewshot/5way_20shot
 data/ModelNetFewshot/10way_10shot
 data/ModelNetFewshot/10way_20shot
 data/shapenetcore_partanno_segmentation_benchmark_v0_normal
+data/240916_*
 experiments
 vis/
 plot/
@@ -148,3 +149,8 @@ pretrain_weight
 segmentation/log
 data/NIFOS_*
 data/TEST_DATA_XYZ/Densi/test/*
+/PointMLP/checkpoints/
+/PointMLP/wandb/
+
+wandb/
+/PointView-GCN/PointNet++/log
