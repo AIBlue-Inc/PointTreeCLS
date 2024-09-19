@@ -154,3 +154,4 @@ data/TEST_DATA_XYZ/Densi/test/*
 
 wandb/
 /PointView-GCN/PointNet++/log
+notebooks/confusion matrix/*
