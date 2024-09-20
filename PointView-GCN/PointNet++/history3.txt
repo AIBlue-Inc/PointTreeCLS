@@ -1,0 +1,88 @@
+    1  history
+    2  ls
+    3  cd ..
+    4  ls
+    5  cd data
+    6  ls
+    7  cd mnt
+    8  ls
+    9  cd data
+   10  ls
+   11  cd PointTreeCLS/
+   12  ls
+   13  python3 main_GPT.py --config cfgs/PointGPT-S/finetune_modelnet_NifosTree4_1k_bs16.yaml --finetune_model --ckpts weights/PointGPT-S_modelnet_1k.pth --exp_name PointGPT-1024-16-1
+   14  pip install easydict
+   15  python3 main_GPT.py --config cfgs/PointGPT-S/finetune_modelnet_NifosTree4_1k_bs16.yaml --finetune_model --ckpts weights/PointGPT-S_modelnet_1k.pth --exp_name PointGPT-1024-16-1
+   16  pip install -r requirements.txt 
+   17  python3 main_GPT.py --config cfgs/PointGPT-S/finetune_modelnet_NifosTree4_1k_bs16.yaml --finetune_model --ckpts weights/PointGPT-S_modelnet_1k.pth --exp_name PointGPT-1024-16-1
+   18  apt install libgl1-mesa-glx
+   19  apt-get install libglib2.0-0
+   20  apt-get update
+   21  apt-get install libglib2.0-0
+   22  apt-get update
+   23  apt-get install libglib2.0-0
+   24  apt install libgl1-mesa-glx
+   25  python3 main_GPT.py --config cfgs/PointGPT-S/finetune_modelnet_NifosTree4_1k_bs16.yaml --finetune_model --ckpts weights/PointGPT-S_modelnet_1k.pth --exp_name PointGPT-1024-16-1
+   26  pip install ninja
+   27  python3 main_GPT.py --config cfgs/PointGPT-S/finetune_modelnet_NifosTree4_1k_bs16.yaml --finetune_model --ckpts weights/PointGPT-S_modelnet_1k.pth --exp_name PointGPT-1024-16-1
+   28  cd extensions/chamfer_dist/
+   29  python setup.py install --user
+   30  cd ../emd/
+   31  python setup.py install --user
+   32  cd ../..
+   33  python3 main_GPT.py --config cfgs/PointGPT-S/finetune_modelnet_NifosTree4_1k_bs16.yaml --finetune_model --ckpts weights/PointGPT-S_modelnet_1k.pth --exp_name PointGPT-1024-16-1
+   34  pip install --upgrade https://github.com/unlimblue/KNN_CUDA/releases/download/0.2/KNN_CUDA-0.2-py3-none-any.whl
+   35  python3 main_GPT.py --config cfgs/PointGPT-S/finetune_modelnet_NifosTree4_1k_bs16.yaml --finetune_model --ckpts weights/PointGPT-S_modelnet_1k.pth --exp_name PointGPT-1024-16-1
+   36  pip install seaborn
+   37  python3 main_GPT.py --config cfgs/PointGPT-S/finetune_modelnet_NifosTree4_1k_bs16.yaml --finetune_model --ckpts weights/PointGPT-S_modelnet_1k.pth --exp_name PointGPT-1024-16-1
+   38  python3 main_GPT.py --config cfgs/PointGPT-S/finetune_modelnet_NifosTree4_2k_bs16.yaml --finetune_model --ckpts weights/PointGPT-S_modelnet_1k.pth --exp_name PointGPT-2048-16-1
+   39  python3 main_GPT.py --config cfgs/PointGPT-S/finetune_modelnet_NifosTree4_1k_bs16.yaml --finetune_model --ckpts weights/PointGPT-S_modelnet_1k.pth --exp_name PointGPT-1024-16-1
+   40  python3 main_GPT.py --config cfgs/PointGPT-S/finetune_modelnet_NifosTree4_2k_bs16.yaml --finetune_model --ckpts weights/PointGPT-S_modelnet_1k.pth --exp_name PointGPT-2048-16-1
+   41  python main_BERT.py --config cfgs/ModelNet_models/PointTransformer_NifosTree4_2k_bs16.yaml --finetune_model --ckpts weights/Point-BERT.pth --exp_name PointBERT-2048-16-1
+   42  git pull
+   43  python main_BERT.py --config cfgs/ModelNet_models/PointTransformer_NifosTree4_2k_bs16.yaml --finetune_model --ckpts weights/Point-BERT.pth --exp_name PointBERT-2048-16-1
+   44  python main_BERT.py --config cfgs/ModelNet_models/PointTransformer_NifosTree4_2k_bs32.yaml --finetune_model --ckpts weights/Point-BERT.pth --exp_name PointBERT-2048-32-1
+   45  ls
+   46  cd PointMLP/
+   47  cd ..
+   48  ls
+   49  cd PointView-GCN/
+   50  ls
+   51  cd PointNet++/
+   52  python main.py
+   53  python main.py --num_points 1024 --batch_size 32
+   54  python main.py --num_point 1024 --batch_size 32
+   55  cd tools
+   56  cd ../../
+   57  cd tools
+   58  git pull
+   59  cd ../
+   60  python tools/test_and_log.py --config=cfgs/ModelNet_models/PointTransformer_NifosTree4_1k_test.yaml --ckpts=experiments/PointTransformer_NifosTree4_1k_bs16/ModelNet_models/PointBERT-1024-16-1/ckpt-best.pth --num_points=1024 --batch_size=16
+   61  ls
+   62  python ./tools/test_and_log.py --config=cfgs/ModelNet_models/PointTransformer_NifosTree4_1k_test.yaml --ckpts=experiments/PointTransformer_NifosTree4_1k_bs16/ModelNet_models/PointBERT-1024-16-1/ckpt-best.pth --num_points=1024 --batch_size=16
+   63  ls
+   64  python tools/test_and_log.py --config=cfgs/ModelNet_models/PointTransformer_NifosTree4_1k_test.yaml --ckpts=experiments/PointTransformer_NifosTree4_1k_bs16/ModelNet_models/PointBERT-1024-16-1/ckpt-best.pth --num_points=1024 --batch_size=16
+   65  python test_and_log.py --config=cfgs/ModelNet_models/PointTransformer_NifosTree4_1k_test.yaml --ckpts=experiments/PointTransformer_NifosTree4_1k_bs16/ModelNet_models/PointBERT-1024-16-1/ckpt-best.pth --num_points=1024 --batch_size=16
+   66  python test_and_log.py --config=cfgs/PointGPT-S/finetune_modelnet_NifosTree4_1k_test.yaml --ckpts=experiments/finetune_modelnet_NifosTree4_1k_bs16/PointGPT-S/PointGPT-1024-16-1/ckpt-best.pth --num_points=1024 --batch_size=16
+   67  python test_and_log.py --config=cfgs/PointGPT-S/finetune_modelnet_NifosTree4_2k_test.yaml --ckpts=experiments/finetune_modelnet_NifosTree4_2k_bs16/PointGPT-S/PointGPT-2048-16-1/ckpt-best.pth --num_points=2048 --batch_size=16
+   68  python test_and_log.py --config=cfgs/PointGPT-S/finetune_modelnet_NifosTree4_2k_test.yaml --ckpts=experiments/finetune_modelnet_NifosTree4_2k_bs32/PointGPT-S/PointGPT-2048-32-1/ckpt-best.pth --num_points=2048 --batch_size=32
+   69  history > hhistory.txt
+   70  python main_GPT.py --config cfgs/PointGPT-S/finetune_modelnet_NifosTree4_1k_bs16.yaml --finetune_model --ckpts weights/PointGPT-S_modelnet_1k.pth --exp_name PointGPT-1024-16-1
+   71  cd PointView-GCN/
+   72  cd PointNet++/
+   73  python test_script.py --model POINTNET_MSG_CLS --num_point 1024 --batch_size 32 --log_dir PointView-GCN/PointNet++/log/classification/2024-09-03_11-39 --num_votes 3
+   74  python test_and_log.py --model POINTNET_MSG_CLS --num_point 1024 --batch_size 32 --log_dir PointView-GCN/PointNet++/log/classification/2024-09-03_11-39 --num_votes 3
+   75  python test_script.py --model POINTNET_MSG_CLS --num_point 1024 --batch_size 32 --log_dir log/classification/2024-09-03_11-39 --num_votes 3
+   76  python test_and_log.py --model POINTNET_MSG_CLS --num_point 1024 --batch_size 32 --log_dir log/classification/2024-09-03_11-39 --num_votes 3
+   77  python test_and_log.py --config=cfgs/ModelNet_models/PointTransformer_NifosTree4_2k_test.yaml --ckpts=experiments/PointTransformer_NifosTree4_2k_bs16/ModelNet_models/PointBERT-2048-16-1/ckpt-best.pth --num_points=2048 --batch_size=16
+   78  cd ../..
+   79  python test_and_log.py --config=cfgs/ModelNet_models/PointTransformer_NifosTree4_2k_test.yaml --ckpts=experiments/PointTransformer_NifosTree4_2k_bs16/ModelNet_models/PointBERT-2048-16-1/ckpt-best.pth --num_points=2048 --batch_size=16
+   80  python test_and_log_BERT.py --config=cfgs/ModelNet_models/PointTransformer_NifosTree4_2k_test.yaml --ckpts=experiments/PointTransformer_NifosTree4_2k_bs16/ModelNet_models/PointBERT-2048-16-1/ckpt-best.pth --num_points=2048 --batch_size=16
+   81  python test_and_log_BERT.py --config=cfgs/ModelNet_models/PointTransformer_NifosTree4_2k_test.yaml --ckpts=experiments/PointTransformer_NifosTree4_2k_bs32/ModelNet_models/PointBERT-2048-32-1/ckpt-best.pth --num_points=2048 --batch_size=32
+   82  python test_and_log_GPT.py --config=cfgs/PointGPT-S/finetune_modelnet_NifosTree4_2k_test.yaml --ckpts=experiments/finetune_modelnet_NifosTree4_2k_bs16/PointGPT-S/PointGPT-2048-16-1/ckpt-best.pth --num_points=2048 --batch_size=16
+   83  git pull
+   84  python test_and_log.py --model POINTNET_MSG_CLS --num_point 1024 --batch_size 32 --log_dir log/classification/2024-09-03_11-39 --num_votes 3
+   85  cd PointView-GCN/
+   86  cd PointNet++/
+   87  python test_and_log.py --model POINTNET_MSG_CLS --num_point 1024 --batch_size 32 --log_dir log/classification/2024-09-03_11-39 --num_votes 3
+   88  history > history3.txt
