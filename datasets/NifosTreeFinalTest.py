@@ -78,7 +78,7 @@ def load_data(data_path, partition, class_names):
 
 
 @DATASETS.register_module()
-class NifosTree4Test(Dataset):
+class NifosTreeFinalTest(Dataset):
     def __init__(self, config):
         self.root = config.DATA_PATH
         self.npoints = config.N_POINTS
