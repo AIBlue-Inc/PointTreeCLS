@@ -82,7 +82,7 @@ def main():
     # Model
     printf(f"args: {args}")
     printf('==> Building model..')
-    net = pointMLP(num_classes=4)
+    net = pointMLP(num_classes=8)
     criterion = cal_loss
     net = net.to(device)
     # criterion = criterion.to(device)

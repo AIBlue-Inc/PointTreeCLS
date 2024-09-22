@@ -39,7 +39,7 @@ def parse_args():
     return parser.parse_args()
 
 
-def test(model, loader, criterion, num_class=4, vote_num=1):
+def test(model, loader, criterion, num_class=8, vote_num=1):
     mean_correct = []
     class_acc = np.zeros((num_class, 3))
     for points, target in tqdm(loader):
