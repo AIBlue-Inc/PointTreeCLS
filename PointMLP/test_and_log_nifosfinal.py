@@ -44,7 +44,7 @@ def parse_args():
     parser.add_argument('--msg', type=str, help='message after checkpoint')
     parser.add_argument('--batch_size', type=int, default=1, help='batch size in testing')
     parser.add_argument('--model', default='pointMLP', help='model name [default: pointnet_cls]')
-    parser.add_argument('--num_classes', default=4, type=int, help='number of classes')
+    parser.add_argument('--num_classes', default=8, type=int, help='number of classes')
     parser.add_argument('--num_points', type=int, default=1024, help='Point Number')
     return parser.parse_args()
 
