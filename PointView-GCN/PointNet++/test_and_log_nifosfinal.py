@@ -29,7 +29,7 @@ def parse_args():
     return parser.parse_args()
 
 
-def test(model, loader, criterion, num_class=4, vote_num=1):
+def test(model, loader, criterion, num_class=8, vote_num=1):
     mean_correct = []
     class_acc = np.zeros((num_class, 3))
     all_preds = []
@@ -98,7 +98,7 @@ def main(args):
     testDataLoader = DataLoader(TEST_DATASET, batch_size=args.batch_size, shuffle=False, num_workers=args.worker)
 
     # Load model
-    num_class = 4
+    num_class = 8
     MODEL = importlib.import_module(args.model)
     classifier = MODEL.get_model(num_class).to(device)
     criterion = MODEL.get_loss().to(device)
