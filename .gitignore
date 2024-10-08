@@ -155,3 +155,6 @@ data/TEST_DATA_XYZ/Densi/test/*
 wandb/
 /PointView-GCN/PointNet++/log
 notebooks/confusion matrix/*
+/data/241008_total_1024_xyz/
+/data/241008_total_2048_xyz/
+notebooks/confusion_matrices_all_models.png

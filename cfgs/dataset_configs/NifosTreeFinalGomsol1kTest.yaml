@@ -1,0 +1,5 @@
+NAME: NifosTreeFinalGomsolTest
+DATA_PATH: data/241008_total_1024_xyz
+N_POINTS: 1024
+NUM_CATEGORY: 8
+USE_NORMALS: FALSE

@@ -8,3 +8,5 @@ import datasets.NifosTree4Dataset
 import datasets.NifosTree4TestDataset
 import datasets.NifosTreeFinal
 import datasets.NifosTreeFinalTest
+import datasets.NifosTreeFinalGomsol
+import datasets.NifosTreeFinalGomsolTest
