@@ -157,4 +157,6 @@ wandb/
 notebooks/confusion matrix/*
 /data/241008_total_1024_xyz/
 /data/241008_total_2048_xyz/
-notebooks/confusion_matrices_all_models.png
+notebooks/*.png
+notebooks/*.csv
+notebooks/*.xlsx
