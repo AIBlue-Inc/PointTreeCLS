@@ -3,6 +3,7 @@ import glob
 import torch.utils.data
 import torch
 
+
 class SinglePointFinalGomsol(torch.utils.data.Dataset):
     def __init__(self, root_dir, scale_aug=False, rot_aug=False, npoint=2048, test_mode=False, num_models=0, num_views=20):
         self.classnames = ['Densi', 'gul', 'Koraiensis', 'Larix', 'obtusa', 'sang', 'sin', 'thunbergii']

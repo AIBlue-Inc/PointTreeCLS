@@ -10,7 +10,7 @@ class_names = ['Densi', 'gul', 'Koraiensis', 'Larix', 'obtusa', 'sang', 'sin', '
 
 def load_data(partition, num_points):
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-    DATA_DIR = os.path.join(BASE_DIR, '../data', f'240916_total_{num_points}_xyz', '*', partition)
+    DATA_DIR = os.path.join(BASE_DIR, '../data', f'241008_total_{num_points}_xyz', '*', partition)
     all_data = []
     all_label = []
     file_list = glob.glob(os.path.join(DATA_DIR, '*.xyz'))

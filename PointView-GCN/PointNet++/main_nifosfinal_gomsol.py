@@ -1,4 +1,4 @@
-from dataloader_nifosfinal import SinglePointFinal
+from dataloader_nifosfinal_gomsol import SinglePointFinalGomsol as SinglePointFinal
 import argparse
 import numpy as np
 import os
@@ -105,8 +105,8 @@ def main(args):
 
     """ DATA LOADING """
     log_string('Load dataset ...')
-    train_path = f'../../data/240916_total_{args.num_point}_xyz/*/train'
-    test_path = f'../../data/240916_total_{args.num_point}_xyz/*/valid'
+    train_path = f'../../data/241008_total_{args.num_point}_xyz/*/train'
+    test_path = f'../../data/241008_total_{args.num_point}_xyz/*/valid'
     TRAIN_DATASET = SinglePointFinal(train_path, npoint=args.num_point)
     TEST_DATASET = SinglePointFinal(test_path, npoint=args.num_point)
     trainDataLoader = DataLoader(TRAIN_DATASET, batch_size=args.batch_size, shuffle=True, num_workers=0)
